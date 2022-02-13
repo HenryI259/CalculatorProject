@@ -15,13 +15,13 @@ functionDict = {
   "cis": cis,
   "log": log,
   "ln": ln,
-  "[": absoluteValue
+  "|": absoluteValue
 }
 
 constantDict = {
   "e": e,
   "pi": pi,
-}
+}                                                              
 
 def solve(slist, x):
   deleteList = []
@@ -35,7 +35,7 @@ def solve(slist, x):
       if isinstance(slist[i], str):
         if 'i' == slist[i][-1] and slist[i] not in functionDict and slist[i] not in constantDict:
           slist[i] = slist[i][0:-1]
-          slist[i] = complexNumber(0, toNumber(slist[i]))
+          slist[i] = complexNumber(0, D(slist[i]))
 
     for i in range(len(slist)):
       if slist[i] == 'x':

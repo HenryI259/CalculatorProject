@@ -6,7 +6,7 @@ zeroPrecision = 9
 rounding = 10
 numPrecision = 10
 
-graphPrecision = 50
+graphPrecision = 100
 
 debug = False
 graphDebug = False

@@ -5,9 +5,9 @@ from Modes.ElectronConfig import electronConfig
 from Modes.Ellipsis import ellipseCalculator
 from Util.Math_Functions import *
 from decimal import Decimal
-from tkinter import *
-from tkinter import ttk
-from tkinter import font as tkfont
+#from tkinter import *
+#from tkinter import ttk
+#from tkinter import font as tkfont
 
 allModes = {
   "Calculator": calculator,
@@ -117,7 +117,7 @@ root.bind("<Return>", calculate)
 root.mainloop()'''
 
 
-running = False
+running = True
 while running:
   for choice in allModes:
     print(f"-{choice}")
