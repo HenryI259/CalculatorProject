@@ -3,7 +3,6 @@ from Modes.Graph import graphing
 from Modes.Triangles import solveTri
 from Modes.ElectronConfig import electronConfig
 from Modes.Ellipsis import ellipseCalculator
-from Modes.encryption import encryption
 from Util.Math_Functions import *
 from decimal import Decimal
 from tkinter import *
@@ -15,8 +14,7 @@ allModes = {
   "Graph": graphing,
   "Solve Triangle": solveTri,
   "Electron Config" : electronConfig,
-  "Solve Ellipse": ellipseCalculator,
-  "Encrypt": encryption
+  "Solve Ellipse": ellipseCalculator
 }
 
 '''class App(Tk):
