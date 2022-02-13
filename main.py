@@ -4,6 +4,7 @@ from Modes.Triangles import solveTri
 from Modes.ElectronConfig import electronConfig
 from Modes.Ellipsis import ellipseCalculator
 from Util.Math_Functions import *
+from constants import *
 from decimal import Decimal
 #from tkinter import *
 #from tkinter import ttk
@@ -117,7 +118,7 @@ root.bind("<Return>", calculate)
 root.mainloop()'''
 
 
-running = False
+running = True
 while running:
   for choice in allModes:
     print(f"-{choice}")
@@ -128,10 +129,10 @@ while running:
     continue
 
   calculating = True
-  try:
-    while calculating:
-      allModes[Input]()
-      if input() == 'exit':
-        calculating = False
-  except:
-      print("Error")
+  #try:
+  while calculating:
+    allModes[Input]()
+    if input() == 'exit':
+      calculating = False
+  #except:
+      #print("Error")

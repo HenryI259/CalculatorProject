@@ -52,7 +52,7 @@ class graphDerivative():
     for i in range(int(self.graphPrecision) + 1):
       x = (i * step) + self.graphStart
       try:
-        y = (self.function(x+nearZero())-self.function(x))/nearZero()
+        y = (self.function(x+nearZero)-self.function(x))/nearZero
       except ZeroDivisionError:
         continue
       if not isinstance(x, complexNumber) and not isinstance(y, complexNumber) and y < self.maxy and y > self.miny:

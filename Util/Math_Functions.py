@@ -358,44 +358,27 @@ def ln(x):
     r = ln(x.radius())
     i = x.angle()
     return complexNumber(r, i)
-  else:
-    return D((exponent(x, nearZero()) - 1) / nearZero())
 
-# same as above
-# only use for decimal exponents
-def ln2(x):
-  # uses taylor series
-  if debug:
-      print(f"ln2({str(x)})")
-  x=D(x)
-  negative = False
-  if x < 0:
-    negative = True
-    x *= -1
-  
-  if x == 1:
+  else:
+    negative = False
+    if x < 0:
+        negative = True
+        x *= -1
+    if x == 1:
+        if negative:
+            return complexNumber(0, pi)
+        else:
+            return 0
+    num = 0
+    while x > e:
+        x /= e
+        num += 1
+    n = 1/(x-1)
+    ln = sigmaFunctionX(0, logPrecision, lambda i, n: 1/(((i * 2) + 1) * exponent((2*n)+1, ((i * 2) + 1))), n)
     if negative:
-      return complexNumber(0, pi)
+        return complexNumber((2*ln) + num, pi)
     else:
-      return 0
-    
-  num = 0
-  while x > e:
-    x /= e
-    num += 1
-
-  n = 1/(x-1)
-  ln = sigmaFunctionX(0, trigPrecision, lambda i, n: 1/(((i * 2) + 1) * exponent((2*n)+1, ((i * 2) + 1))), n)
-  if negative:
-    return complexNumber((2*ln) + num, pi)
-  else:
-    return D((2*ln) + num)
-
-# returns a number close to zeroPrecision
-# uses int exponents
-def nearZero():
-  # 10 raised to a negitive number
-  return D(exponent(10, zeroPrecision * -1))
+        return D((2*ln) + num)
 
 # returns a number raised to another number
 # uses sin, cos, ln
@@ -453,7 +436,7 @@ def exponent(number, power):
 
     # uses python exponents
     else:
-      return D(cis(complexNumber(0, -1) * power * ln2(number)))
+      return D(cis(complexNumber(0, -1) * power * ln(number)))
 
 # returns a number to a root
 # uses exponents
@@ -543,3 +526,7 @@ e = D(sigmaFunction(0, ePrecision, lambda n: 1/factorial(n)))
 
 # pi
 pi = D((426880 * root(10005, 2)) / sigmaFunction(0, piPrecision, lambda i: (factorial(6*i)*(13591409 + (545140134 * i))) / (factorial(3*i)*exponent(factorial(i),3) *exponent(-262537412640768000, i))))
+
+# a number close to zero
+# uses int exponents
+nearZero = D(exponent(10, zeroPrecision * -1))
