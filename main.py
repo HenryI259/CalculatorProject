@@ -119,7 +119,7 @@ root.bind("<Return>", calculate)
 root.mainloop()'''
 
 
-running = True
+running = False
 while running:
   for choice in allModes:
     print(f"-{choice}")
@@ -137,3 +137,5 @@ while running:
       calculating = False
   #except:
       #print("Error")
+
+print('hihi')
