@@ -60,7 +60,7 @@ class complexNumber():
 
   # division overrides
   def __truediv__(self, other):
-    if debug:
+    if False:
       print(f"{str(self)} / {str(other)}")
     if isinstance(other, complexNumber):
       a = self.real
@@ -147,7 +147,7 @@ class complexNumber():
       if self.imaginary > 0:
         return D(pi / 2)
       elif self.imaginary < 0:
-        return D(pi * 3 / 2)
+        return D(-pi / 2)
     elif self.real > 0:
       return D(arctan(self.imaginary/self.real))
     elif self.real < 0:
@@ -263,7 +263,7 @@ def arcsin(x, amount=1):
       print(f"Arcsin({str(x)})")
   x = D(x)
 
-  arcsin = complexNumber(0,-1) * ln(root(1-exponent(x, 2),2)+ complexNumber(0, x))
+  arcsin = complexNumber(0,-1) * ln(root(1-exponent(x, 2),2) + (complexNumber(0, 1) * x))
 
   if amount == 1:
       return arcsin
@@ -292,7 +292,7 @@ def arccos(x, amount=1):
   # uses inverse of cos
   x = D(x)
   
-  arccos = D((pi/2) + complexNumber(0,1) * ln(root(1-exponent(x, 2),2)+ complexNumber(0, x)))
+  arccos = D((pi/2) + complexNumber(0,1) * ln(root(1-exponent(x, 2),2) + (complexNumber(0, 1) * x)))
 
   if amount == 1:
       return arccos
@@ -355,12 +355,17 @@ def ln(x):
   if isinstance(x, complexNumber):
     # finds the ln of a complex number in polar form
     num = 0
-    while x > e:
-        x /= e
-        num += 1
-    n = 1/(x-1)
-    ln = sigmaFunctionX(0, logPrecision, lambda i, n: 1/(((i * 2) + 1) * exponent((2*n)+1, ((i * 2) + 1))), n)
-    return complexNumber(D((2*ln) + num), x.angle())
+    radius = x.radius()
+    if radius == 1:
+        r = 0
+    else:
+        while radius > e:
+            radius /= e
+            num += 1
+        n = 1/(radius-1)
+        ln = sigmaFunctionX(0, logPrecision, lambda i, n: 1/(((i * 2) + 1) * exponent((2*n)+1, ((i * 2) + 1))), n)
+        r = D((2*ln) + num)
+    return complexNumber(r, x.angle())
 
   else:
     negative = False
@@ -387,7 +392,7 @@ def ln(x):
 # uses sin, cos, ln
 def exponent(number, power):
   number, power = D(number), D(power)
-  if debug and number != 10:
+  if False and number != 10:
       print(f"{str(number)} to the {str(power)}")
   if power == 0 and number != 0:
     return 1

@@ -118,7 +118,7 @@ root.bind("<Return>", calculate)
 root.mainloop()'''
 
 
-running = False
+running = True
 while running:
   for choice in allModes:
     print(f"-{choice}")
@@ -137,5 +137,4 @@ while running:
   #except:
       #print("Error")
 
-print('start')
-print(arctan(complexNumber(2, -3)))
+print(arcsin(-1))
