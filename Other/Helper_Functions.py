@@ -12,7 +12,8 @@ def D(x):
     return x
 
 def isNumber(x):
-  if isinstance(x, int) or isinstance(x, float) or isinstance(x, Decimal):
+  from Util.Math_Functions import complexNumber
+  if isinstance(x, int) or isinstance(x, float) or isinstance(x, Decimal) or isinstance(x, complexNumber):
     return True
   else:
     for char in x:

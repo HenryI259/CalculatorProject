@@ -258,82 +258,81 @@ def cot(x):
 
 # returns the arcsin of a number
 # uses ln, root, int exponents
-def arcsin(x):
+def arcsin(x, amount=1):
   if debug:
       print(f"Arcsin({str(x)})")
-  # uses the inverse of sin
   x = D(x)
-  return D(complexNumber(0,-1) * ln(root(1-exponent(x, 2),2)+ complexNumber(0, x)))
+
+  arcsin = complexNumber(0,-1) * ln(root(1-exponent(x, 2),2)+ complexNumber(0, x))
+
+  if amount == 1:
+      return arcsin
+  else:
+      answerList = []
+      n=0
+      extraPi = 0
+
+      for i in range(amount):
+        if i%2 == 0:
+          answerList.append(arcsin + (2 * pi * n) + extraPi)
+          arcsin *= -1
+          extraPi += pi
+          extraPi = absoluteValue(extraPi) * -1
+        else:
+          answerList.append(arcsin - (2 * pi * n) + extraPi)
+        if (i - 1) % 4 == 0:
+          n += 1
+      return orderList(answerList)
 
 # returns the arccos of a number
 # uses arcsin, pi
-def arccos(x):
+def arccos(x, amount=1):
   if debug:
       print(f"Arccos({str(x)})")
   # uses inverse of cos
   x = D(x)
-  return D((pi/2) + complexNumber(0,1) * ln(root(1-exponent(x, 2),2)+ complexNumber(0, x)))
+  
+  arccos = D((pi/2) + complexNumber(0,1) * ln(root(1-exponent(x, 2),2)+ complexNumber(0, x)))
+
+  if amount == 1:
+      return arccos
+  else:
+      answerList = []
+      n=0
+      extraPi = 0
+
+      for i in range(amount):
+        if i%2 == 0:
+            answerList.append(arccos + (2 * pi * n))
+            arccos *= -1
+        else:
+            answerList.append(arccos - (2 * pi * n))
+        if (i - 1) % 4 == 0:
+            n += 1
+        return orderList(answerList)
 
 # returns the arctan of a number
 # uses int exponents, factorial
-def arctan(x):
+def arctan(x, amount=1):
   if debug:
       print(f"Arctan({str(x)})")
   x=D(x)
   # uses a taylor series
-  return D(sigmaFunctionX(0, trigPrecision, lambda n, x: ((exponent(2, 2 * n) * exponent(factorial(n), 2)/factorial((2 * n) + 1))) * (exponent(x, (2 * n) + 1) / exponent(1 + exponent(x, 2), n + 1)), x))
-
-def arcsin(x, amount=1):
-  # produces muliple values of arcsin
-  x = D(x)
-  answerList = []
-  n=0
-  extraPi = 0
-  arcsin = complexNumber(0,-1) * ln(root(1-exponent(x, 2),2)+ complexNumber(0, x))
-  for i in range(amount):
-    if i%2 == 0:
-      answerList.append(arcsin + (2 * pi * n) + extraPi)
-      arcsin *= -1
-      extraPi += pi
-      extraPi = absoluteValue(extraPi) * -1
-    else:
-      answerList.append(arcsin - (2 * pi * n) + extraPi)
-
-    if (i - 1) % 4 == 0:
-      n += 1
-
-  return orderList(answerList)
-
-def multArccos(x, amount):
-  # produces muliple values of arccos
-  x = D(x)
-  answerList = []
-  n=0
-  arcsin = D((pi/2) + complexNumber(0,1) * ln(root(1-exponent(x, 2),2)+ complexNumber(0, x)))
-  for i in range(amount):
-    if i%2 == 0:
-      answerList.append(arcsin + (2 * pi * n))
-      arcsin *= -1
-    else:
-      answerList.append(arcsin - (2 * pi * n))
-
-    if (i - 1) % 4 == 0:
-      n += 1
-
-  return orderList(answerList)
-
-def multArctan(x, amount):
-  x=D(x)
-  answerList = []
-  n = 0
   arctan = D(sigmaFunctionX(0, trigPrecision, lambda n, x: ((exponent(2, 2 * n) * exponent(factorial(n), 2)/factorial((2 * n) + 1))) * (exponent(x, (2 * n) + 1) / exponent(1 + exponent(x, 2), n + 1)), x))
-  for i in range(amount):
-    if i % 2 == 0:
-      answerList.append(arctan - pi * n)
-    else:
-      n += 1
-      answerList.append(arctan + pi * n)
-  return orderList(answerList)
+
+  if amount == 1:
+      return arctan
+  else:
+      answerList = []
+      n=0
+
+      for i in range(amount):
+        if i % 2 == 0:
+            answerList.append(arctan - pi * n)
+        else:
+            n += 1
+            answerList.append(arctan + pi * n)
+      return orderList(answerList)
 
 def cis(x):
   x = D(x)
