@@ -194,23 +194,23 @@ def factorial(x):
 
 # returns the sin of a number
 # uses int exponents, factorial
-def sin(x):
+def sin(x, precision=trigPrecision):
   # uses a taylor series
   if debug:
       print(f"Sin({str(x)})")
   x = D(x)
-  return D(sigmaFunctionX(0, trigPrecision, lambda n, x: exponent(x, ((n*2)+1)) / factorial((n*2)+1) * exponent(-1, n), x))
+  return D(sigmaFunctionX(0, precision, lambda n, x: exponent(x, ((n*2)+1)) / factorial((n*2)+1) * exponent(-1, n), x))
 
 # returns the cos of a number
 # uses int exponents, factorial
-def cos(x):
+def cos(x, precision=trigPrecision):
   if debug:
       print(f"Cos({str(x)})")
   x = D(x)
   if x == 0:
     return 1
   # uses a taylor series
-  return D(sigmaFunctionX(0, trigPrecision, lambda n, x: exponent(x, (n*2)) / factorial(n*2) * exponent(-1, n), x))
+  return D(sigmaFunctionX(0, precision, lambda n, x: exponent(x, (n*2)) / factorial(n*2) * exponent(-1, n), x))
 
 # returns tan of a number
 # uses sin, cos
@@ -313,12 +313,12 @@ def arccos(x, amount=1):
 
 # returns the arctan of a number
 # uses int exponents, factorial
-def arctan(x, amount=1):
+def arctan(x, amount=1, precision=arctanPrecision):
   if debug:
       print(f"Arctan({str(x)})")
   x=D(x)
   # uses a taylor series
-  arctan = D(sigmaFunctionX(0, trigPrecision, lambda n, x: ((exponent(2, 2 * n) * exponent(factorial(n), 2)/factorial((2 * n) + 1))) * (exponent(x, (2 * n) + 1) / exponent(1 + exponent(x, 2), n + 1)), x))
+  arctan = D(sigmaFunctionX(0, precision, lambda n, x: (exponent(2, 2*n) * exponent(factorial(n), 2) / factorial(2*n + 1)) * (exponent(x, 2*n + 1)/exponent(1 + exponent(x, 2), n+1)), x))
 
   if amount == 1:
       return arctan
@@ -348,7 +348,7 @@ def log(x, base):
 
 # returns the ln of a number
 # uses complex number's radius/angle, exponent, nearZero
-def ln(x):
+def ln(x, precision=logPrecision):
   if debug:
       print(f"ln({str(x)})")
   x = D(x)
@@ -363,7 +363,7 @@ def ln(x):
             radius /= e
             num += 1
         n = 1/(radius-1)
-        ln = sigmaFunctionX(0, logPrecision, lambda i, n: 1/(((i * 2) + 1) * exponent((2*n)+1, ((i * 2) + 1))), n)
+        ln = sigmaFunctionX(0, precision, lambda i, n: 1/(((i * 2) + 1) * exponent((2*n)+1, ((i * 2) + 1))), n)
         r = D((2*ln) + num)
     return complexNumber(r, x.angle())
 
@@ -382,7 +382,7 @@ def ln(x):
         x /= e
         num += 1
     n = 1/(x-1)
-    ln = sigmaFunctionX(0, logPrecision, lambda i, n: 1/(((i * 2) + 1) * exponent((2*n)+1, ((i * 2) + 1))), n)
+    ln = sigmaFunctionX(0, precision, lambda i, n: 1/(((i * 2) + 1) * exponent((2*n)+1, ((i * 2) + 1))), n)
     if negative:
         return complexNumber((2*ln) + num, pi)
     else:

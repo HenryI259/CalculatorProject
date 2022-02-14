@@ -30,7 +30,6 @@ class graphFunction():
       if not isinstance(x, complexNumber) and not isinstance(y, complexNumber) and y < self.maxy and y > self.miny:
         self.x.append(x)
         self.y.append(y)
-        print(i)
 
   def plot(self, color='b'):
     self.findValues()

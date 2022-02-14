@@ -136,5 +136,3 @@ while running:
       calculating = False
   #except:
       #print("Error")
-
-print(arcsin(-1))
