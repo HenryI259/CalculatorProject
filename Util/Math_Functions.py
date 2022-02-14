@@ -152,9 +152,9 @@ class complexNumber():
       return D(arctan(self.imaginary/self.real))
     elif self.real < 0:
       if self.imaginary > 0:
-        return D(arctan(self.imaginary/self.real) + pi())
+        return D(arctan(self.imaginary/self.real) + pi)
       elif self.imaginary < 0:
-        return D(arctan(self.imaginary/self.real) - pi())
+        return D(arctan(self.imaginary/self.real) - pi)
 
   def fixI(self):
     if (self.imaginary < exponent(10, -numPrecision) and self.imaginary > -exponent(10, -numPrecision)):
@@ -354,9 +354,13 @@ def ln(x):
   x = D(x)
   if isinstance(x, complexNumber):
     # finds the ln of a complex number in polar form
-    r = ln(x.radius())
-    i = x.angle()
-    return complexNumber(r, i)
+    num = 0
+    while x > e:
+        x /= e
+        num += 1
+    n = 1/(x-1)
+    ln = sigmaFunctionX(0, logPrecision, lambda i, n: 1/(((i * 2) + 1) * exponent((2*n)+1, ((i * 2) + 1))), n)
+    return complexNumber(D((2*ln) + num), x.angle())
 
   else:
     negative = False
