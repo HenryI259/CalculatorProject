@@ -1,5 +1,5 @@
-from Util.Math_Functions import *
-from Other.Helper_Functions import *
+from Util.MathFunctions import *
+from Util.HelperFunctions import *
 
 def ellipseCalculator():
   print("Give the values to this equation")

@@ -1,6 +1,6 @@
 from constants import *
 from decimal import Decimal
-from Other.Helper_Functions import *
+from Util.HelperFunctions import *
 
 class complexNumber():
   def __init__(self, r, i):
@@ -318,7 +318,7 @@ def arctan(x, amount=1, precision=arctanPrecision):
       print(f"Arctan({str(x)})")
   x=D(x)
   # uses a taylor series
-  arctan = D(sigmaFunctionX(0, precision, lambda n, x: (exponent(2, 2*n) * exponent(factorial(n), 2) / factorial(2*n + 1)) * (exponent(x, 2*n + 1)/exponent(1 + exponent(x, 2), n+1)), x))
+  arctan = D(sigmaFunctionX(0, precision, lambda n, x: D(exponent(2, 2*n) * exponent(factorial(n), 2) / factorial(2*n + 1)) * D(exponent(x, 2*n + 1)/exponent(1 + exponent(x, 2), n+1)), x))
 
   if amount == 1:
       return arctan

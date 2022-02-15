@@ -1,6 +1,6 @@
 from Util.Graphing import *
-from Util.Math_Functions import *
-from Other.Helper_Functions import *
+from Util.MathFunctions import *
+from Util.HelperFunctions import *
 from Modes.Calculator import *
 
 def checkTriangle(sides, angles):

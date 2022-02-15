@@ -1,4 +1,4 @@
-from Util.Math_Functions import *
+from Util.MathFunctions import *
 from Util.Graphing import *
 from Modes.Calculator import *
 

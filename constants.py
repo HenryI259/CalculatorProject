@@ -12,7 +12,7 @@ piPrecision = 1
 zeroPrecision = 10
 numPrecision = 10
 
-graphPrecision = 1000
+graphPrecision = 100
 
 debug = False
 graphDebug = False

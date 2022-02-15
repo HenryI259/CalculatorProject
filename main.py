@@ -3,8 +3,7 @@ from Modes.Graph import graphing
 from Modes.Triangles import solveTri
 from Modes.ElectronConfig import electronConfig
 from Modes.Ellipsis import ellipseCalculator
-from Util.Math_Functions import *
-from constants import *
+from Util.MathFunctions import *
 from decimal import Decimal
 #from tkinter import *
 #from tkinter import ttk

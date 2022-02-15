@@ -1,5 +1,5 @@
-from Util.Math_Functions import *
-from Other.Helper_Functions import D
+from Util.MathFunctions import *
+from Util.HelperFunctions import D
 from constants import *
 import os
 import tempfile
@@ -19,8 +19,8 @@ class graphFunction():
     self.y = []
 
   def findValues(self):
-    graphLength = self.graphEnd - self.graphStart
-    step = graphLength / self.graphPrecision
+    graphLength = D(self.graphEnd) - D(self.graphStart)
+    step = graphLength / D(self.graphPrecision)
     for i in range(int(self.graphPrecision) + 1):
       x = (i * step) + self.graphStart
       try:
@@ -47,8 +47,8 @@ class graphDerivative():
     self.y = []
 
   def findValues(self):
-    graphLength = self.graphEnd - self.graphStart
-    step = graphLength / self.graphPrecision
+    graphLength = D(self.graphEnd) - D(self.graphStart)
+    step = graphLength / D(self.graphPrecision)
     for i in range(int(self.graphPrecision) + 1):
       x = (i * step) + self.graphStart
       try:
@@ -76,8 +76,8 @@ class graphIntegral():
     self.C = 0
 
   def findValues(self):
-    graphLength = self.graphEnd - self.graphStart
-    step = graphLength / self.graphPrecision
+    graphLength = D(self.graphEnd) - D(self.graphStart)
+    step = graphLength / D(self.graphPrecision)
     y=0
     tempX = []
     tempY = []
@@ -133,4 +133,13 @@ def drawGraph(givenGraph):
     ax.yaxis.set_ticks_position('left')
   
   givenGraph.plot()
+  plt.show()
+
+
+graph1 = graphFunction(lambda x: root(1-exponent(absoluteValue(x) - 1, 2), 2), (-2, 2), (-10, 10), graphPrecision)
+graph2 = graphFunction(lambda x: arccos(1 - absoluteValue(x)) - pi, (-2, 2), (-10, 10), graphPrecision)
+
+def drawSetGraphs():
+  graph1.plot('r')
+  graph2.plot('r')
   plt.show()
