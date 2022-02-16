@@ -27,6 +27,8 @@ class graphFunction():
         y = self.function(x)
       except ZeroDivisionError:
         continue
+      if graphDebug:
+          print(f"{x}, {y}")
       if not isinstance(x, complexNumber) and not isinstance(y, complexNumber) and y < self.maxy and y > self.miny:
         self.x.append(x)
         self.y.append(y)
@@ -55,6 +57,8 @@ class graphDerivative():
         y = (self.function(x+nearZero)-self.function(x))/nearZero
       except ZeroDivisionError:
         continue
+      if graphDebug:
+          print(f"{x}, {y}")
       if not isinstance(x, complexNumber) and not isinstance(y, complexNumber) and y < self.maxy and y > self.miny:
         self.x.append(x)
         self.y.append(y)
@@ -98,6 +102,8 @@ class graphIntegral():
     for i in range(len(tempY)):
       tempY[i] = tempY[i] + self.C
       if not isinstance(tempX[i], complexNumber) and not isinstance(tempY[i], complexNumber) and tempY[i] < self.maxy and tempY[i] > self.miny:
+        if graphDebug:
+          print(f"{tempX[i]}, {tempY[i]}")
         self.x.append(tempX[i])
         self.y.append(tempY[i])
 
@@ -106,13 +112,6 @@ class graphIntegral():
     plt.plot(self.x, self.y, color)
 
 def drawGraph(givenGraph):
-  if graphDebug:
-    givenGraph.findValues()
-    for i in range(len(givenGraph.y)):
-      print(f"{givenGraph.x[i]}, {givenGraph.y[i]}")
-    if len(givenGraph.y) == 0:
-      print("empty")
-  
   if isinstance(givenGraph, graphIntegral):
     fig = plt.figure()
     ax = fig.add_subplot(1, 1, 1)

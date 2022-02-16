@@ -7,7 +7,7 @@ def D(x):
     return x
 
 def isNumber(x):
-  from Util.Math_Functions import complexNumber
+  from Util.MathFunctions import complexNumber
   if isinstance(x, int) or isinstance(x, float) or isinstance(x, Decimal) or isinstance(x, complexNumber):
     return True
   else:
