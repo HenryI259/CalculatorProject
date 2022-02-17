@@ -194,6 +194,8 @@ def factorial(x):
 
 # returns the sin of a number
 # uses int exponents, factorial
+@cache
+@timer
 def sin(x, precision=trigPrecision):
   # uses a taylor series
   if debug:

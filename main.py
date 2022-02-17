@@ -17,7 +17,7 @@ allModes = {
   "Solve Ellipse": ellipseCalculator
 }
 
-running = True
+running = False
 while running:
   for choice in allModes:
     print(f"-{choice}")
@@ -35,3 +35,5 @@ while running:
       calculating = False
   #except:
       #print("Error")
+
+print(sin(2))
