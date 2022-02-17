@@ -194,8 +194,7 @@ def factorial(x):
 
 # returns the sin of a number
 # uses int exponents, factorial
-@cache
-@timer
+@cacheHandling
 def sin(x, precision=trigPrecision):
   # uses a taylor series
   if debug:
@@ -205,6 +204,7 @@ def sin(x, precision=trigPrecision):
 
 # returns the cos of a number
 # uses int exponents, factorial
+@cacheHandling
 def cos(x, precision=trigPrecision):
   if debug:
       print(f"Cos({str(x)})")
@@ -216,6 +216,7 @@ def cos(x, precision=trigPrecision):
 
 # returns tan of a number
 # uses sin, cos
+@cacheHandling
 def tan(x):
   if debug:
       print(f"Tan({str(x)})")
@@ -227,6 +228,7 @@ def tan(x):
 
 # returns the csc of a number
 # uses sin
+@cacheHandling
 def csc(x):
   if debug:
       print(f"Csc({str(x)})")
@@ -238,6 +240,7 @@ def csc(x):
 
 # returns the sec of a number
 # uses cos
+@cacheHandling
 def sec(x):
   if debug:
       print(f"Sec({str(x)})")
@@ -249,6 +252,7 @@ def sec(x):
 
 # returns the cot of a number
 # uses sin, cos
+@cacheHandling
 def cot(x):
   if debug:
       print(f"Cot({str(x)})")
@@ -260,6 +264,7 @@ def cot(x):
 
 # returns the arcsin of a number
 # uses ln, root, int exponents
+@cacheHandling
 def arcsin(x, amount=1):
   if debug:
       print(f"Arcsin({str(x)})")
@@ -288,6 +293,7 @@ def arcsin(x, amount=1):
 
 # returns the arccos of a number
 # uses arcsin, pi
+@cacheHandling
 def arccos(x, amount=1):
   if debug:
       print(f"Arccos({str(x)})")
@@ -315,6 +321,7 @@ def arccos(x, amount=1):
 
 # returns the arctan of a number
 # uses int exponents, factorial
+@cacheHandling
 def arctan(x, amount=1, precision=arctanPrecision):
   if debug:
       print(f"Arctan({str(x)})")
@@ -336,6 +343,7 @@ def arctan(x, amount=1, precision=arctanPrecision):
             answerList.append(arctan + pi * n)
       return orderList(answerList)
 
+@cacheHandling
 def cis(x):
   x = D(x)
   return cos(x) + complexNumber(0, 1) * sin(x)
@@ -350,6 +358,7 @@ def log(x, base):
 
 # returns the ln of a number
 # uses complex number's radius/angle, exponent, nearZero
+@cacheHandling
 def ln(x, precision=logPrecision):
   if debug:
       print(f"ln({str(x)})")

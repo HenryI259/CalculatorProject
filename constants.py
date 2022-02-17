@@ -2,8 +2,8 @@
 trigPrecision = 15
 #max 27
 logPrecision = 27
-#max 80
-arctanPrecision = 80
+#max ?
+arctanPrecision = 100
 #max 26
 ePrecision = 26
 #max 1
