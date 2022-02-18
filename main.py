@@ -4,6 +4,7 @@ from Modes.Triangles import solveTri
 from Modes.ElectronConfig import electronConfig
 from Modes.Ellipsis import ellipseCalculator
 from Util.MathFunctions import *
+from Util.HelperFunctions import *
 from decimal import Decimal
 #from tkinter import *
 #from tkinter import ttk
@@ -34,4 +35,4 @@ while running:
     if input() == 'exit':
       calculating = False
   #except:
-      #print("Error")
+      print("Error")

@@ -100,7 +100,10 @@ def solve(slist, x):
         deleteList.append(i+1)
         break
       if slist[i] == '/':
-        slist[i-1] = D(slist[i-1])/D(slist[i+1])
+        try:
+          slist[i-1] = D(slist[i-1])/D(slist[i+1])
+        except:
+          slist[i-1] = Decimal("Infinity")
         deleteList.append(i)
         deleteList.append(i+1)
         break

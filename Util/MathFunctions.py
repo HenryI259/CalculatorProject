@@ -350,6 +350,7 @@ def cis(x):
 
 # returns the log of a number
 # uses ln
+@cacheHandling
 def log(x, base):
   if debug:
       print(f"Log base {str(base)} of {str(x)}")
@@ -401,6 +402,7 @@ def ln(x, precision=logPrecision):
 
 # returns a number raised to another number
 # uses sin, cos, ln
+@cacheHandling
 def exponent(number, power):
   number, power = D(number), D(power)
   if False and number != 10:
