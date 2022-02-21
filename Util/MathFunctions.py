@@ -200,7 +200,9 @@ def sin(x, precision=trigPrecision):
   if debug:
       print(f"Sin({str(x)})")
   x = D(x)
-  return D(sigmaFunctionX(0, precision, lambda n, x: exponent(x, ((n*2)+1)) / factorial((n*2)+1) * exponent(-1, n), x))
+  if x > 10:
+      x = x%pi
+  return D(sigmaFunction(0, precision, lambda n, x: exponent(x, ((n*2)+1)) / factorial((n*2)+1) * exponent(-1, n), x))
 
 # returns the cos of a number
 # uses int exponents, factorial
@@ -211,8 +213,10 @@ def cos(x, precision=trigPrecision):
   x = D(x)
   if x == 0:
     return 1
+  if x > 10:
+    x = x%pi
   # uses a taylor series
-  return D(sigmaFunctionX(0, precision, lambda n, x: exponent(x, (n*2)) / factorial(n*2) * exponent(-1, n), x))
+  return D(sigmaFunction(0, precision, lambda n, x: exponent(x, (n*2)) / factorial(n*2) * exponent(-1, n), x))
 
 # returns tan of a number
 # uses sin, cos
@@ -327,7 +331,7 @@ def arctan(x, amount=1, precision=arctanPrecision):
       print(f"Arctan({str(x)})")
   x=D(x)
   # uses a taylor series
-  arctan = D(sigmaFunctionX(0, precision, lambda n, x: D(exponent(2, 2*n) * exponent(factorial(n), 2) / factorial(2*n + 1)) * D(exponent(x, 2*n + 1)/exponent(1 + exponent(x, 2), n+1)), x))
+  arctan = D(sigmaFunction(0, precision, lambda n, x: D(exponent(2, 2*n) * exponent(factorial(n), 2) / factorial(2*n + 1)) * D(exponent(x, 2*n + 1)/exponent(1 + exponent(x, 2), n+1)), x))
 
   if amount == 1:
       return arctan
@@ -394,7 +398,7 @@ def ln(x, precision=logPrecision):
         x /= e
         num += 1
     n = 1/(x-1)
-    ln = sigmaFunctionX(0, precision, lambda i, n: 1/(((i * 2) + 1) * exponent((2*n)+1, ((i * 2) + 1))), n)
+    ln = sigmaFunction(0, precision, lambda i, n: 1/(((i * 2) + 1) * exponent((2*n)+1, ((i * 2) + 1))), n)
     if negative:
         return complexNumber((2*ln) + num, pi)
     else:
@@ -405,8 +409,9 @@ def ln(x, precision=logPrecision):
 @cacheHandling
 def exponent(number, power):
   number, power = D(number), D(power)
-  if False and number != 10:
+  if debug and number != 10:
       print(f"{str(number)} to the {str(power)}")
+
   if power == 0 and number != 0:
     return 1
 
@@ -415,22 +420,6 @@ def exponent(number, power):
 
   elif number == 1:
     return 1
-
-  # uses sin, cos, ln
-  elif isinstance(power, complexNumber):
-    if isinstance(number, complexNumber):
-      # complex number to a complex number
-      # uses a changed eulars equation
-      c = power.real
-      d = power.imaginary
-      return D(exponent(number, c) * cis(d * ln(number)))
-    
-    else:
-      # number to a complex number
-      # uses a changed eulars equation
-      r = exponent(number, power.real) * cos(power.imaginary * ln(number))
-      i = exponent(number, power.real) * sin(power.imaginary * ln(number))
-      return complexNumber(r, i)
 
   elif power == int(power):
     # number to an int
@@ -447,21 +436,22 @@ def exponent(number, power):
       return D(1 / number)
     else:
       return D(number)
+
+  # uses sin, cos, ln
+  elif isinstance(power, complexNumber):
+    # complex number to a complex number
+    # uses a changed eulars equation
+    c = power.real
+    d = power.imaginary
+    return D(exponent(number, c) * cis(d * ln(number)))
   
   elif isinstance(power, Decimal):
     # uses sin, cos, ln
-    if isinstance(number, complexNumber):
-      # complex number to a float
-      # uses a changed eulars equation
-      return D(cis(complexNumber(0, -1) * power * ln(number)))
-
-    # uses python exponents
-    else:
-      return D(cis(complexNumber(0, -1) * power * ln(number)))
+    return D(cis(complexNumber(0, -1) * power * ln(number)))
 
 # returns a number to a root
 # uses exponents
-def root(number, root):
+def root(number, root=2):
   if debug:
       print(f"Root {str(root)} of {str(number)}")
   number,root = D(number),D(root)
@@ -475,72 +465,41 @@ def absoluteValue(x):
   else:
     return x
 
-def sigmaFunction(start, end, function):
+def sigmaFunction(start, end, function, otherVariable=None):
   answer = 0
-  for n in range(end-start+1):
-    answer = D(answer) + D(function(n+start))
+  if otherVariable == None:
+      for n in range(int(end)-int(start)+1):
+        answer = D(answer) + D(function(n+start))
+  else:
+      otherVariable = D(otherVariable)
+      for n in range(end-start+1):
+        answer = D(answer) + D(function(n+start, otherVariable))
   return answer
 
-def sigmaFunctionX(start, end, function, otherVariable):
-  answer = 0
-  otherVariable = D(otherVariable)
-  for n in range(end-start+1):
-    answer = D(answer) + D(function(n+start, otherVariable))
-  return answer
-
-def piFunction(start, end, function):
+def piFunction(start, end, function, otherVariable=None):
   answer = 1
-  for n in range(end-start+1):
-    answer = D(answer) * D(function(n+start))
+  if otherVariable == None:
+      for n in range(end-start+1):
+        answer = D(answer) * D(function(n+start))
+  else:
+      otherVariable = D(otherVariable)
+      for n in range(end-start+1):
+        answer = D(answer) * D(function(n+start, otherVariable))
   return answer
 
-def piFunctionX(start, end, function, otherVariable):
-  answer = 1
-  otherVariable=D(otherVariable)
-  for n in range(end-start+1):
-    answer = D(answer) * D(function(n+start, otherVariable))
-  return answer
+def lim(func, approachedNum=0, *args):
+    try:
+        return func(approachedNum, *args)
+    except:
+        return func(approachedNum+nearZero, *args)
 
-def floor(x):
-  x=D(x)
-  return x - (x%1)
+'''def derivative(func):
+    def fprime(x):
+        return lim(lambda h, x: (func(x+h) - func(x))/h, 0, x)
+    return fprime'''
 
-def ceiling(x):
-  x=D(x)
-  return x + (1 - (x%1))
-
-def decimalPlaces(x):
-  x=D(x)
-  i = D(0)
-  while x != floor(x):
-    print(f"{x}, {floor(x)}")
-    original = x
-    for j in range(9):
-      x += original
-    i += 1
-  return i
-
-def toRadians(x):
-  x=D(x)
-  return D(x * pi / 180)
-
-def toDegrees(x):
-  x=D(x)
-  return D(x * 180 / pi)
-
-def toDMS(x):
-  x=D(x)
-  minutes = (x%1) * 60
-  seconds = (minutes%1) * 60
-  return f"{floor(x)} {floor(minutes)}' {seconds}''"
-
-def toDecimalDegrees(degrees, minutes, seconds):
-  degrees, minutes, seconds = D(degrees), D(minutes), D(seconds)
-  return D(degrees + (minutes / 60) + (seconds / 3600))
-
-def toPi(x, decimalPlaces):
-  x=D(x)
-  return f"{round(x/pi, decimalPlaces)}pi"
+'''def defIntegral(func, lower, upper):
+    return lim(lambda dx: sigmaFunction(lower, upper/dx, lambda x: func(x)*dx), 0)'''
 
 # eulars number
 e = D(sigmaFunction(0, ePrecision, lambda n: 1/factorial(n)))

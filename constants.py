@@ -9,7 +9,7 @@ ePrecision = 26
 #max 1
 piPrecision = 1
 
-zeroPrecision = 10
+zeroPrecision = 3
 numPrecision = 10
 
 graphPrecision = 200

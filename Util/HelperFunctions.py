@@ -129,3 +129,47 @@ def clearCache(func=None):
     os.remove(f'Cache/{func}')
   except:
     pass
+
+def floor(x):
+  x=D(x)
+  return x - (x%1)
+
+def ceiling(x):
+  x=D(x)
+  return x + (1 - (x%1))
+
+def decimalPlaces(x):
+  x=D(x)
+  i = D(0)
+  while x != floor(x):
+    print(f"{x}, {floor(x)}")
+    original = x
+    for j in range(9):
+      x += original
+    i += 1
+  return i
+
+def toRadians(x):
+  x=D(x)
+  from Util.MathFunctions import pi
+  return D(x * pi / 180)
+
+def toDegrees(x):
+  x=D(x)
+  from Util.MathFunctions import pi
+  return D(x * 180 / pi)
+
+def toDMS(x):
+  x=D(x)
+  minutes = (x%1) * 60
+  seconds = (minutes%1) * 60
+  return f"{floor(x)} {floor(minutes)}' {seconds}''"
+
+def toDecimalDegrees(degrees, minutes, seconds):
+  degrees, minutes, seconds = D(degrees), D(minutes), D(seconds)
+  return D(degrees + (minutes / 60) + (seconds / 3600))
+
+def toPi(x, decimalPlaces):
+  x=D(x)
+  from Util.MathFunctions import pi
+  return f"{round(x/pi, decimalPlaces)}pi"
