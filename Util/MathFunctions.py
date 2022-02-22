@@ -200,8 +200,9 @@ def sin(x, precision=trigPrecision):
   if debug:
       print(f"Sin({str(x)})")
   x = D(x)
-  if x > 10:
-      x = x%pi
+  if isinstance(x, Decimal):
+      if x > 10 or x < 10:
+          x = x%(2*pi)
   return D(sigmaFunction(0, precision, lambda n, x: exponent(x, ((n*2)+1)) / factorial((n*2)+1) * exponent(-1, n), x))
 
 # returns the cos of a number
@@ -213,8 +214,9 @@ def cos(x, precision=trigPrecision):
   x = D(x)
   if x == 0:
     return 1
-  if x > 10:
-    x = x%pi
+  if isinstance(x, Decimal):
+      if x > 10 or x < 10:
+        x = x%(2*pi)
   # uses a taylor series
   return D(sigmaFunction(0, precision, lambda n, x: exponent(x, (n*2)) / factorial(n*2) * exponent(-1, n), x))
 
@@ -411,7 +413,6 @@ def exponent(number, power):
   number, power = D(number), D(power)
   if debug and number != 10:
       print(f"{str(number)} to the {str(power)}")
-
   if power == 0 and number != 0:
     return 1
 
@@ -420,6 +421,22 @@ def exponent(number, power):
 
   elif number == 1:
     return 1
+
+  # uses sin, cos, ln
+  elif isinstance(power, complexNumber):
+    if isinstance(number, complexNumber):
+      # complex number to a complex number
+      # uses a changed eulars equation
+      c = power.real
+      d = power.imaginary
+      return D(exponent(number, c) * cis(d * ln(number)))
+    
+    else:
+      # number to a complex number
+      # uses a changed eulars equation
+      r = exponent(number, power.real) * cos(power.imaginary * ln(number))
+      i = exponent(number, power.real) * sin(power.imaginary * ln(number))
+      return complexNumber(r, i)
 
   elif power == int(power):
     # number to an int
@@ -436,18 +453,17 @@ def exponent(number, power):
       return D(1 / number)
     else:
       return D(number)
-
-  # uses sin, cos, ln
-  elif isinstance(power, complexNumber):
-    # complex number to a complex number
-    # uses a changed eulars equation
-    c = power.real
-    d = power.imaginary
-    return D(exponent(number, c) * cis(d * ln(number)))
   
   elif isinstance(power, Decimal):
     # uses sin, cos, ln
-    return D(cis(complexNumber(0, -1) * power * ln(number)))
+    if isinstance(number, complexNumber):
+      # complex number to a float
+      # uses a changed eulars equation
+      return D(cis(complexNumber(0, -1) * power * ln(number)))
+
+    # uses python exponents
+    else:
+      return D(cis(complexNumber(0, -1) * power * ln(number)))
 
 # returns a number to a root
 # uses exponents
@@ -493,13 +509,13 @@ def lim(func, approachedNum=0, *args):
     except:
         return func(approachedNum+nearZero, *args)
 
-'''def derivative(func):
+def derivative(func):
     def fprime(x):
         return lim(lambda h, x: (func(x+h) - func(x))/h, 0, x)
-    return fprime'''
+    return fprime
 
-'''def defIntegral(func, lower, upper):
-    return lim(lambda dx: sigmaFunction(lower, upper/dx, lambda x: func(x)*dx), 0)'''
+def defIntegral(lower, upper, func, precision=integralPrecision):
+    return sigmaFunction(0, precision, lambda n, dx: func((n * dx) + lower) * dx, (upper-lower)/precision)
 
 # eulars number
 e = D(sigmaFunction(0, ePrecision, lambda n: 1/factorial(n)))

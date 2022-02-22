@@ -54,7 +54,7 @@ class graphDerivative():
     for i in range(int(self.graphPrecision) + 1):
       x = (i * step) + self.graphStart
       try:
-        y = self.function(x)
+        y = derivative(self.function)(x)
       except ZeroDivisionError:
         continue
       if graphDebug:
