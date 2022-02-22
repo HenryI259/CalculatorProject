@@ -136,7 +136,7 @@ class complexNumber():
   def radius(self):
     if debug:
       print(f"Radius of {str(self)}")
-    return D(root(exponent(self.real, 2) + exponent(self.imaginary, 2), 2))
+    return D(root(exponent(self.real) + exponent(self.imaginary, 2), 2))
 
   # returns the angle for polar form
   # uses pi, arctan
@@ -276,7 +276,7 @@ def arcsin(x, amount=1):
       print(f"Arcsin({str(x)})")
   x = D(x)
 
-  arcsin = complexNumber(0,-1) * ln(root(1-exponent(x, 2),2) + (complexNumber(0, 1) * x))
+  arcsin = complexNumber(0,-1) * ln(root(1-exponent(x, 2)) + (complexNumber(0, 1) * x))
 
   if amount == 1:
       return arcsin
@@ -306,7 +306,7 @@ def arccos(x, amount=1):
   # uses inverse of cos
   x = D(x)
   
-  arccos = D((pi/2) + complexNumber(0,1) * ln(root(1-exponent(x, 2),2) + (complexNumber(0, 1) * x)))
+  arccos = D((pi/2) + complexNumber(0,1) * ln(root(1-exponent(x, 2)) + (complexNumber(0, 1) * x)))
 
   if amount == 1:
       return arccos
@@ -413,6 +413,7 @@ def exponent(number, power):
   number, power = D(number), D(power)
   if debug and number != 10:
       print(f"{str(number)} to the {str(power)}")
+
   if power == 0 and number != 0:
     return 1
 
@@ -421,22 +422,6 @@ def exponent(number, power):
 
   elif number == 1:
     return 1
-
-  # uses sin, cos, ln
-  elif isinstance(power, complexNumber):
-    if isinstance(number, complexNumber):
-      # complex number to a complex number
-      # uses a changed eulars equation
-      c = power.real
-      d = power.imaginary
-      return D(exponent(number, c) * cis(d * ln(number)))
-    
-    else:
-      # number to a complex number
-      # uses a changed eulars equation
-      r = exponent(number, power.real) * cos(power.imaginary * ln(number))
-      i = exponent(number, power.real) * sin(power.imaginary * ln(number))
-      return complexNumber(r, i)
 
   elif power == int(power):
     # number to an int
@@ -453,17 +438,18 @@ def exponent(number, power):
       return D(1 / number)
     else:
       return D(number)
+
+  # uses sin, cos, ln
+  elif isinstance(power, complexNumber):
+    # uses a changed eulars equation
+    c = power.real
+    d = power.imaginary
+    return D(exponent(number, c) * cis(d * ln(number)))
   
   elif isinstance(power, Decimal):
     # uses sin, cos, ln
-    if isinstance(number, complexNumber):
-      # complex number to a float
-      # uses a changed eulars equation
-      return D(cis(complexNumber(0, -1) * power * ln(number)))
-
-    # uses python exponents
-    else:
-      return D(cis(complexNumber(0, -1) * power * ln(number)))
+    # uses a changed eulars equation
+    return D(cis(complexNumber(0, -1) * power * ln(number)))
 
 # returns a number to a root
 # uses exponents
@@ -481,15 +467,11 @@ def absoluteValue(x):
   else:
     return x
 
-def sigmaFunction(start, end, function, otherVariable=None):
+def sigmaFunction(start, end, function, *args):
   answer = 0
-  if otherVariable == None:
-      for n in range(int(end)-int(start)+1):
-        answer = D(answer) + D(function(n+start))
-  else:
-      otherVariable = D(otherVariable)
-      for n in range(end-start+1):
-        answer = D(answer) + D(function(n+start, otherVariable))
+  args = list(map(D, args))
+  for n in range(int(end)-int(start)+1):
+    answer = D(answer) + D(function(n+start, *args))
   return answer
 
 def piFunction(start, end, function, otherVariable=None):
@@ -503,7 +485,7 @@ def piFunction(start, end, function, otherVariable=None):
         answer = D(answer) * D(function(n+start, otherVariable))
   return answer
 
-def lim(func, approachedNum=0, *args):
+def lim(approachedNum, func, *args):
     try:
         return func(approachedNum, *args)
     except:
@@ -511,7 +493,7 @@ def lim(func, approachedNum=0, *args):
 
 def derivative(func):
     def fprime(x):
-        return lim(lambda h, x: (func(x+h) - func(x))/h, 0, x)
+        return lim(0, lambda h, x: (func(x+h) - func(x))/h, x)
     return fprime
 
 def defIntegral(lower, upper, func, precision=integralPrecision):
@@ -521,7 +503,7 @@ def defIntegral(lower, upper, func, precision=integralPrecision):
 e = D(sigmaFunction(0, ePrecision, lambda n: 1/factorial(n)))
 
 # pi
-pi = D((426880 * root(10005, 2)) / sigmaFunction(0, piPrecision, lambda i: (factorial(6*i)*(13591409 + (545140134 * i))) / (factorial(3*i)*exponent(factorial(i),3) *exponent(-262537412640768000, i))))
+pi = D((426880 * root(10005)) / sigmaFunction(0, piPrecision, lambda i: (factorial(6*i)*(13591409 + (545140134 * i))) / (factorial(3*i)*exponent(factorial(i),3) *exponent(-262537412640768000, i))))
 
 # a number close to zero
 # uses int exponents

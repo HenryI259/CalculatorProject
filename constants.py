@@ -11,7 +11,7 @@ piPrecision = 1
 #max ?
 integralPrecision = 1000
 
-zeroPrecision = 10
+zeroPrecision = 9
 numPrecision = 10
 
 graphPrecision = 200
